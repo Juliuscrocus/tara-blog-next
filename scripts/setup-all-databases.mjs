@@ -1,4 +1,5 @@
-import { Client } from '@notionhq/client';
+import pkg from '@notionhq/client';
+const { Client } = pkg;
 
 const notion = new Client({
   auth: process.env.NOTION_SECRET,
@@ -80,13 +81,13 @@ async function updateDatabase(dbId, dbName, properties) {
   console.log(`   ID: ${dbId}`);
 
   try {
-    // First retrieve to confirm access
-    const existing = await notion.databases.retrieve({ database_id: dbId });
+    // First retrieve to confirm access using dataSources
+    const existing = await notion.dataSources.retrieve({ data_source_id: dbId });
     console.log(`   Found: ${existing.title?.[0]?.plain_text || 'Untitled'}`);
 
-    // Then update
-    const result = await notion.databases.update({
-      database_id: dbId,
+    // Then update using dataSources
+    const result = await notion.dataSources.update({
+      data_source_id: dbId,
       properties: properties,
     });
     console.log(`✅ ${dbName} updated successfully!`);
